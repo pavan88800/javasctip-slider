@@ -1,12 +1,27 @@
 let slideIndex = 0;
 let slidesList = document.querySelectorAll(".image-slider");
-
+let conatinerdots = document.querySelector("#conatiner-dots");
+let TIME_SET = 4000;
 displayslider(slideIndex);
 let dotDisplay = document.querySelectorAll(".dots");
 
-for (let i = 0; i < dotDisplay.length; i++) {
-  dotDisplay[i].addEventListener("click", () => jumpSlider(i));
-}
+// dots indexs
+conatinerdots.addEventListener("click", (event) => {
+  if (event.target.className === "dots") {
+    console.log(Number(event.target.dataset.index));
+    jumpSlider(Number(event.target.dataset.index));
+  }
+});
+
+setInterval(() => {
+  if (slideIndex === slidesList.length - 1) {
+    slideIndex = 0;
+    jumpSlider(slideIndex);
+  } else {
+    slideIndex = slideIndex + 1;
+    jumpSlider(slideIndex);
+  }
+}, TIME_SET);
 
 const jumpSlider = (index) => {
   slideIndex = index;
@@ -15,10 +30,10 @@ const jumpSlider = (index) => {
 
 function displayslider(val) {
   let dots = document.querySelectorAll(".dots");
-  if (val > slideIndex.length) {
+
+  if (val < slideIndex.length) {
     slideIndex = 0;
   }
-
   // display all to none
   for (let i = 0; i < slidesList.length; i++) {
     slidesList[i].style.display = "none";
@@ -28,14 +43,10 @@ function displayslider(val) {
 
   // display active to none
   for (let i = 0; i < dots.length; i++) {
-    dots[i].className = dots[i].className.replace("active", "");
+    dots[i].setAttribute("data-index", i);
+    dots[i].classList.remove("active");
   }
-
-  // display active when index matches
-  dots[slideIndex].className = dots[slideIndex].className.replace(
-    "",
-    " active "
-  );
+  dots[slideIndex].classList.add("active");
 }
 
 // prev
@@ -54,7 +65,7 @@ prev.addEventListener("click", () => {
 // move next
 next.addEventListener("click", () => {
   if (slideIndex < slidesList.length - 1) {
-    slideIndex += 1;
+    slideIndex = slideIndex + 1;
     displayslider(slideIndex);
   }
 });
