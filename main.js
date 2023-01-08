@@ -8,7 +8,6 @@ let dotDisplay = document.querySelectorAll(".dots");
 // dots indexs
 conatinerdots.addEventListener("click", (event) => {
   if (event.target.className === "dots") {
-    console.log(Number(event.target.dataset.index));
     jumpSlider(Number(event.target.dataset.index));
   }
 });
